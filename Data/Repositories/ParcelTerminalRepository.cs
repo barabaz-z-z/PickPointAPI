@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using Domain;
 
 namespace Data.Repositories
@@ -17,9 +15,14 @@ namespace Data.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<IEnumerable<ParcelTerminal>> GetAllAsync()
+        public IQueryable<ParcelTerminal> GetAll()
         {
-            return await _dbContext.ParcelTerminals.ToArrayAsync();
+            return _dbContext.ParcelTerminals;
+        }
+
+        public ParcelTerminal GetById(string id)
+        {
+            return GetAll().Where(pt => pt.Index == id).Single();
         }
     }
 }
