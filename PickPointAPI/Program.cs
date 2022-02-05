@@ -17,9 +17,7 @@ namespace PickPointAPI
 
             using (var scope = host.Services.CreateScope())
             {
-                var context = scope.ServiceProvider.GetRequiredService<PickPointDbContext>();
-
-                context.Database.EnsureCreated();
+                PickPointDbInitializer.Initialize(scope.ServiceProvider.GetRequiredService<PickPointDbContext>());
             }
 
             host.Run();
