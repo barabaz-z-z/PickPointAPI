@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Data;
+using Data.Repositories;
 using Domain;
 
 namespace PickPointAPI.Controllers
@@ -13,17 +14,18 @@ namespace PickPointAPI.Controllers
     {
         private readonly PickPointDbContext _context;
 
-        public ParcelTerminalsController(PickPointDbContext context)
+        private readonly ParcelTerminalRepository _parcelTerminalRepository;
+
+        public ParcelTerminalsController(PickPointDbContext context, ParcelTerminalRepository parcelTerminalRepository)
         {
             _context = context;
+            _parcelTerminalRepository = parcelTerminalRepository;
         }
 
         [HttpGet]
         public async Task<ActionResult> List()
         {
-            var smt = await Task.Run(() => { return _context.ParcelTerminals.ToArray(); });
-
-            return Ok(smt);
+            return Ok(await _parcelTerminalRepository.GetAllAsync());
         }
 
         [HttpGet("{id}")]

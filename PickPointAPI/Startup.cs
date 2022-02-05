@@ -30,6 +30,7 @@ namespace PickPointAPI
             });
 
             services.AddPickPointDbContext(Configuration.GetConnectionString("Postgre"));
+            services.RegisterPickPointDbRepositories();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
