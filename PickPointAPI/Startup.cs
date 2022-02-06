@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Data;
+using PickPointAPI.Services;
 
 namespace PickPointAPI
 {
@@ -31,6 +32,8 @@ namespace PickPointAPI
 
             services.AddPickPointDbContext(Configuration.GetConnectionString("Postgre"));
             services.RegisterPickPointDbRepositories();
+            services.AddScoped<ParcelTerminalService>();
+            services.AddScoped<ParcelService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

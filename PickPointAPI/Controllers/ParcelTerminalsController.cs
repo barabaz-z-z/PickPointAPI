@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Mvc;
 using Data.Repositories;
 using Domain;
+using PickPointAPI.Services;
 
 namespace PickPointAPI.Controllers
 {
@@ -27,9 +27,8 @@ namespace PickPointAPI.Controllers
         [HttpGet("{id}")]
         public ActionResult Get(string id)
         {
-            var regex = new Regex(@"\d{4}-\d{3}");
-            if (!regex.Match(id).Success)
-                return BadRequest("Parcel terminal id format is not correct. Valid id format is XXXX-XXX.");
+            if (!ParcelTerminalService.IsParcelTerminalIdFormatValid(id))
+                return BadRequest();
 
             ParcelTerminal parcelTerminal;
 

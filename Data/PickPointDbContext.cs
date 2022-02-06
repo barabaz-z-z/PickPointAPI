@@ -10,6 +10,7 @@ namespace Data
     public class PickPointDbContext : DbContext
     {
         public DbSet<ParcelTerminal> ParcelTerminals { get; set; }
+        public DbSet<Parcel> Parcels { get; set; }
 
         public PickPointDbContext(DbContextOptions options) : base(options)
         {

@@ -11,7 +11,9 @@ namespace Data
         public static void Initialize(PickPointDbContext context)
         {
             context.Database.EnsureDeleted();
-            context.Database.EnsureCreated();
+
+            if (!context.Database.EnsureCreated())
+                return;
 
             context.Add(new ParcelTerminal
             {

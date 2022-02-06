@@ -18,6 +18,7 @@ namespace Data
         public static void RegisterPickPointDbRepositories(this IServiceCollection services)
         {
             services.AddTransient<ParcelTerminalRepository>();
+            services.AddTransient<ParcelRepository>();
         }
     }
 }
