@@ -12,15 +12,17 @@ namespace PickPointAPI.Controllers
 {
     public class ParcelsController : PickPointAPIControllerBase
     {
+        private const string ItemSeparator = ", ";
+
         private readonly ParcelRepository _parcelRepository;
         private readonly ParcelService _parcelService;
-        private readonly ParcelTerminalService _parcelTerminalService;
+        private readonly ParcelTerminalRepository _parcelTerminalRepository;
 
-        public ParcelsController(ParcelRepository parcelRepository, ParcelService parcelService, ParcelTerminalService parcelTerminalService)
+        public ParcelsController(ParcelRepository parcelRepository, ParcelService parcelService, ParcelTerminalRepository parcelTerminalRepository)
         {
             _parcelRepository = parcelRepository;
             _parcelService = parcelService;
-            _parcelTerminalService = parcelTerminalService;
+            _parcelTerminalRepository = parcelTerminalRepository;
         }
 
         [HttpGet("{id}")]
@@ -37,10 +39,11 @@ namespace PickPointAPI.Controllers
         [HttpPost]
         public ActionResult Create([FromBody] CreateModel model)
         {
-            if (!ParcelTerminalService.IsParcelTerminalIdFormatValid(model.ParcelTerminalId))
+            ParcelTerminal parcelTerminal;
+            if (!ParcelTerminalService.IsParcelTerminalIdFormatValid(model.ParcelTerminalId) || (parcelTerminal = _parcelTerminalRepository.GetById(model.ParcelTerminalId)) == null)
                 return BadRequest();
 
-            if (_parcelTerminalService.IsParcelTerminalClosed(model.ParcelTerminalId))
+            if (!parcelTerminal.Status)
                 return Forbid();
 
             var parcel = new Parcel
@@ -50,7 +53,7 @@ namespace PickPointAPI.Controllers
                 RecepientPhone = model.RecepientPhone,
                 RecepientFullName = model.RecepientFullName,
                 Status = model.Status,
-                Items = string.Join(", ", model.Items),
+                Items = string.Join(ItemSeparator, model.Items),
             };
 
             _parcelService.Add(parcel);
@@ -70,12 +73,10 @@ namespace PickPointAPI.Controllers
                 Amount = model.Amount,
                 RecepientPhone = model.RecepientPhone,
                 RecepientFullName = model.RecepientFullName,
-                Items = string.Join(", ", model.Items),
+                Items = string.Join(ItemSeparator, model.Items),
             };
 
-            // TODO probably, need to check if parcel is canceled, then no necessity to update and return Forbidden response code
-            // do it in service
-            _parcelRepository.Update(parcel);
+            _parcelService.Update(parcel);
 
             return NoContent();
         }

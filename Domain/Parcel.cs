@@ -12,11 +12,7 @@ namespace Domain
         [Required]
         public int Id { get; set; }
 
-        [Required]
-        public int ParcelNumber { get; set; }
-
         public string ParcelTerminalId { get; set; }
-        public ParcelTerminal ParcelTerminal { get; set; }
 
         [Range(1, 6)]
         public int Status { get; set; }

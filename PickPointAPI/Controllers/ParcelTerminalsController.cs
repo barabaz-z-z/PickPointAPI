@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Data.Repositories;
-using Domain;
 using PickPointAPI.Services;
 
 namespace PickPointAPI.Controllers
@@ -30,16 +29,9 @@ namespace PickPointAPI.Controllers
             if (!ParcelTerminalService.IsParcelTerminalIdFormatValid(id))
                 return BadRequest();
 
-            ParcelTerminal parcelTerminal;
-
-            try
-            {
-                parcelTerminal = _parcelTerminalRepository.GetById(id);
-            }
-            catch (Exception)
-            {
+            var parcelTerminal = _parcelTerminalRepository.GetById(id);
+            if (parcelTerminal == null)
                 return NotFound();
-            }
 
             return Ok(parcelTerminal);
         }

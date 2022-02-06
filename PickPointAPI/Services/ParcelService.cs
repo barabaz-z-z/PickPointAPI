@@ -30,5 +30,22 @@ namespace PickPointAPI.Services
         {
             _parcelRepository.Add(parcel);
         }
+
+        public void Update(Parcel parcel)
+        {
+            var existedParcelInfo = _parcelRepository.GetAll()
+                .Where(p => p.Id == parcel.Id)
+                .Select(p => new
+                {
+                    p.ParcelTerminalId,
+                    p.Status
+                })
+                .Single();
+
+            parcel.ParcelTerminalId = existedParcelInfo.ParcelTerminalId;
+            parcel.Status = existedParcelInfo.Status;
+
+            _parcelRepository.Add(parcel);
+        }
     }
 }
