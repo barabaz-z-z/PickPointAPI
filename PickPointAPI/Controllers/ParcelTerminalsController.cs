@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Data.Repositories;
 using Domain;
 
@@ -20,23 +19,30 @@ namespace PickPointAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> List()
+        public ActionResult List()
         {
-            return Ok(await _parcelTerminalRepository.GetAll().OrderBy(pt => pt.Index).ToArrayAsync());
+            return Ok(_parcelTerminalRepository.GetAll().OrderBy(pt => pt.Index).ToArray());
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ParcelTerminal>> Get(string id)
+        public ActionResult Get(string id)
         {
-            //var parcelTerminal = await _context.ParcelTerminals.FindAsync(id);
+            var regex = new Regex(@"\d{4}-\d{3}");
+            if (!regex.Match(id).Success)
+                return BadRequest("Parcel terminal number format is not correct. Valid formst is XXXX-XXX.");
 
-            // TODO get rid of usage of GetById here in favor to creating FindAsync method in service
-            var parcelTerminal = _parcelTerminalRepository.GetById(id);
+            ParcelTerminal parcelTerminal;
 
-            if (parcelTerminal == null)
+            try
+            {
+                parcelTerminal = _parcelTerminalRepository.GetById(id);
+            }
+            catch (Exception)
+            {
                 return NotFound();
+            }
 
-            return parcelTerminal;
+            return Ok(parcelTerminal);
         }
     }
 }
