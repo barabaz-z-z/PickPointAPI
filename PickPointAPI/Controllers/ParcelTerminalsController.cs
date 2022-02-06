@@ -21,7 +21,7 @@ namespace PickPointAPI.Controllers
         [HttpGet]
         public ActionResult List()
         {
-            return Ok(_parcelTerminalRepository.GetAll().OrderBy(pt => pt.Index).ToArray());
+            return Ok(_parcelTerminalRepository.GetAll().OrderBy(pt => pt.Id).ToArray());
         }
 
         [HttpGet("{id}")]
@@ -29,7 +29,7 @@ namespace PickPointAPI.Controllers
         {
             var regex = new Regex(@"\d{4}-\d{3}");
             if (!regex.Match(id).Success)
-                return BadRequest("Parcel terminal number format is not correct. Valid formst is XXXX-XXX.");
+                return BadRequest("Parcel terminal id format is not correct. Valid id format is XXXX-XXX.");
 
             ParcelTerminal parcelTerminal;
 

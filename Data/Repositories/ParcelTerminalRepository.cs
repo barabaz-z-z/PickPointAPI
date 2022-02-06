@@ -22,7 +22,7 @@ namespace Data.Repositories
 
         public ParcelTerminal GetById(string id)
         {
-            return GetAll().Where(pt => pt.Index == id).Single();
+            return GetAll().Where(pt => pt.Id == id).Single();
         }
     }
 }

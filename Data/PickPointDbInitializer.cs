@@ -15,21 +15,21 @@ namespace Data
 
             context.Add(new ParcelTerminal
             {
-                Index = "1234-567",
+                Id = "1234-567",
                 Address = "Novokuznetsk, Ordzhonikidze, 35",
                 Status = true,
             });
 
             context.Add(new ParcelTerminal
             {
-                Index = "8910-111",
+                Id = "8910-111",
                 Address = "Novokuznetsk, Kirova, 55",
                 Status = true,
             });
 
             context.Add(new ParcelTerminal
             {
-                Index = "2131-415",
+                Id = "2131-415",
                 Address = "Novokuznetsk, Ermakova, 9A",
             });
 
