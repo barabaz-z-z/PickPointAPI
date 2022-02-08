@@ -10,7 +10,7 @@ namespace Data
     {
         public static void Initialize(PickPointDbContext context)
         {
-            context.Database.EnsureDeleted();
+            //context.Database.EnsureDeleted();
 
             if (!context.Database.EnsureCreated())
                 return;
