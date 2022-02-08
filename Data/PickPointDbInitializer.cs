@@ -15,9 +15,10 @@ namespace Data
             if (!context.Database.EnsureCreated())
                 return;
 
+            const string firstParcelTerminalId = "1234-567";
             context.Add(new ParcelTerminal
             {
-                Id = "1234-567",
+                Id = firstParcelTerminalId,
                 Address = "Novokuznetsk, Ordzhonikidze, 35",
                 Status = true,
             });
@@ -33,6 +34,21 @@ namespace Data
             {
                 Id = "2131-415",
                 Address = "Novokuznetsk, Ermakova, 9A",
+            });
+
+            context.Add(new Parcel
+            {
+                Amount = 1000,
+                Items = string.Join(", ", new string[]
+                {
+                    "Lego Ninjago Journal 1 2022",
+                    "Lego 71754",
+                    "Play-Doh"
+                }),
+                ParcelTerminalId = firstParcelTerminalId,
+                RecepientFullName = "Vitalii Shulenin",
+                RecepientPhone = "+7999-999-00-00",
+                Status = ParcelStatus.Registered,
             });
 
             context.SaveChanges();

@@ -10,8 +10,5 @@ namespace PickPointAPI.Models.Parcel
     {
         [RegularExpression(@"\d{4}-\d{3}")]
         public string ParcelTerminalId { get; set; }
-
-        [Range(1, 6)]
-        public int Status { get; set; }
     }
 }

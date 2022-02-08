@@ -18,7 +18,12 @@ namespace Data.Repositories
 
         public IQueryable<Parcel> GetAll()
         {
-            return _dbContext.Parcels;
+            return _dbContext.Parcels.AsNoTracking();
+        }
+
+        public Parcel GetById(int id)
+        {
+            return GetAll().Where(p => p.Id == id).SingleOrDefault();
         }
 
         public void Add(Parcel parcel)
@@ -29,7 +34,7 @@ namespace Data.Repositories
 
         public void Update(Parcel parcel)
         {
-            _dbContext.Entry(parcel).State = EntityState.Modified;
+            _dbContext.Update(parcel);
             _dbContext.SaveChanges();
         }
     }

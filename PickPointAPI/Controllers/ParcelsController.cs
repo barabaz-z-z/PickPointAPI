@@ -33,7 +33,7 @@ namespace PickPointAPI.Controllers
             if (parcel == null)
                 return NotFound();
 
-            return Ok(parcel);
+            return Ok(new GetModel(parcel));
         }
 
         [HttpPost]
@@ -52,7 +52,7 @@ namespace PickPointAPI.Controllers
                 ParcelTerminalId = model.ParcelTerminalId,
                 RecepientPhone = model.RecepientPhone,
                 RecepientFullName = model.RecepientFullName,
-                Status = model.Status,
+                Status = ParcelStatus.Registered,
                 Items = string.Join(ItemSeparator, model.Items),
             };
 
@@ -67,16 +67,14 @@ namespace PickPointAPI.Controllers
             if (!_parcelService.Exists(id))
                 return NotFound();
 
-            var parcel = new Parcel
+            _parcelService.Update(new Parcel
             {
                 Id = id,
                 Amount = model.Amount,
                 RecepientPhone = model.RecepientPhone,
                 RecepientFullName = model.RecepientFullName,
                 Items = string.Join(ItemSeparator, model.Items),
-            };
-
-            _parcelService.Update(parcel);
+            });
 
             return NoContent();
         }
@@ -87,7 +85,9 @@ namespace PickPointAPI.Controllers
             if (!_parcelService.Exists(id))
                 return NotFound();
 
-            throw new NotImplementedException();
+            _parcelService.Cancel(id);
+
+            return NoContent();
         }
     }
 }

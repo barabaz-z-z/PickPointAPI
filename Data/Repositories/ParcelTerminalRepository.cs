@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.EntityFrameworkCore;
 using Domain;
 
 namespace Data.Repositories
@@ -17,7 +18,7 @@ namespace Data.Repositories
 
         public IQueryable<ParcelTerminal> GetAll()
         {
-            return _dbContext.ParcelTerminals;
+            return _dbContext.ParcelTerminals.AsNoTracking();
         }
 
         public ParcelTerminal GetById(string id)

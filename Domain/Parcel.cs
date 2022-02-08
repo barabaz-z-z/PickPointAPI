@@ -15,7 +15,7 @@ namespace Domain
         public string ParcelTerminalId { get; set; }
 
         [Range(1, 6)]
-        public int Status { get; set; }
+        public ParcelStatus Status { get; set; }
 
         public string Items { get; set; }
         public decimal Amount { get; set; }

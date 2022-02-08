@@ -31,21 +31,23 @@ namespace PickPointAPI.Services
             _parcelRepository.Add(parcel);
         }
 
+        public void Cancel(int parcelId)
+        {
+            var existedParcelInfo = _parcelRepository.GetById(parcelId);
+
+            existedParcelInfo.Status = ParcelStatus.Canceled;
+
+            _parcelRepository.Update(existedParcelInfo);
+        }
+
         public void Update(Parcel parcel)
         {
-            var existedParcelInfo = _parcelRepository.GetAll()
-                .Where(p => p.Id == parcel.Id)
-                .Select(p => new
-                {
-                    p.ParcelTerminalId,
-                    p.Status
-                })
-                .Single();
+            var existedParcelInfo = _parcelRepository.GetById(parcel.Id);
 
             parcel.ParcelTerminalId = existedParcelInfo.ParcelTerminalId;
             parcel.Status = existedParcelInfo.Status;
 
-            _parcelRepository.Add(parcel);
+            _parcelRepository.Update(parcel);
         }
     }
 }
